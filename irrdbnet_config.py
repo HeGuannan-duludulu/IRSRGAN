@@ -8,6 +8,7 @@ from torch.backends import cudnn
 # Random seed to maintain reproducible results
 random.seed(0)
 torch.manual_seed(0)
+
 np.random.seed(0)
 # If GPU is not availble, then use cpu
 device = torch.device("cuda", 0) if torch.cuda.is_available() else "cpu"
