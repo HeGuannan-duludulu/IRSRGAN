@@ -114,7 +114,7 @@ def main():
         # Update LR
         scheduler.step()
 
-        # Automatically save the model with the highest index
+        """自动保存性能最好的模型"""
         is_best = psnr > best_psnr and ssim > best_ssim
         is_last = (epoch + 1) == irrdbnet_config.epochs
         best_psnr = max(psnr, best_psnr)
