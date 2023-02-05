@@ -15,7 +15,7 @@ import imgproc
 
 __all__ = [
     "TrainValidImageDataset", "TestImageDataset",
-    "PrefetchGenerator", "PrefetchDataLoader", "CPUPrefetcher", "CUDAPrefetcher",
+    "PrefetchGenerator", "PrefetchDataLoader", "CUDAPrefetcher",
 ]
 
 
@@ -157,29 +157,6 @@ class PrefetchDataLoader(DataLoader):
     def __iter__(self):
         return PrefetchGenerator(super().__iter__(), self.num_data_prefetch_queue)
 
-
-class CPUPrefetcher:
-    """Use the CPU side to accelerate data reading.
-
-    Args:
-        dataloader (DataLoader): Data loader. Combines a dataset and a sampler, and provides an iterable over the given dataset.
-    """
-
-    def __init__(self, dataloader: DataLoader) -> None:
-        self.original_dataloader = dataloader
-        self.data = iter(dataloader)
-
-    def next(self):
-        try:
-            return next(self.data)
-        except StopIteration:
-            return None
-
-    def reset(self):
-        self.data = iter(self.original_dataloader)
-
-    def __len__(self) -> int:
-        return len(self.original_dataloader)
 
 
 class CUDAPrefetcher:
