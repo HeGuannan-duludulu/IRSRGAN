@@ -1,6 +1,6 @@
 import torch.nn as nn
 from torchvision.models import vgg19
-import config
+from waitting_files import config
 
 
 class VGGLoss(nn.Module):

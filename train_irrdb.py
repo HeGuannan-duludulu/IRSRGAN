@@ -174,6 +174,9 @@ def build_model() -> [nn.Module, nn.Module]:
     # load model in cpu or gpu
     rrdbnet_model = rrdbnet_model.to(device=irrdbnet_config.device)
 
+    """new_addded"""
+    model.initialize_weights(rrdbnet_model)
+
     # Create an Exponential Moving Average Model
     ema_avg = lambda averaged_model_parameter, model_parameter, num_averaged: (1 - irrdbnet_config.model_ema_decay) * \
                                                                               averaged_model_parameter + irrdbnet_config.model_ema_decay * \
