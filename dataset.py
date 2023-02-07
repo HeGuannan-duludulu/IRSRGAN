@@ -15,7 +15,7 @@ import imgproc
 
 __all__ = [
     "TrainValidImageDataset", "TestImageDataset",
-    "PrefetchGenerator", "PrefetchDataLoader", "CUDAPrefetcher",
+    "CUDAPrefetcher",
 ]
 
 
@@ -60,6 +60,7 @@ class TrainValidImageDataset(Dataset):
             raise ValueError("Unsupported data processing model, please use `Train` or `Valid`.")
 
         lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
+        """degradation funtion to replace the img_resize func here"""
 
         # BGR convert RGB
         gt_image = cv2.cvtColor(gt_image, cv2.COLOR_BGR2RGB)
@@ -110,53 +111,6 @@ class TestImageDataset(Dataset):
 
     def __len__(self) -> int:
         return len(self.gt_image_file_names)
-
-
-class PrefetchGenerator(threading.Thread):
-    """A fast data prefetch generator.
-
-    Args:
-        generator: Data generator.
-        num_data_prefetch_queue (int): How many early data load queues.
-    """
-
-    def __init__(self, generator, num_data_prefetch_queue: int) -> None:
-        threading.Thread.__init__(self)
-        self.queue = queue.Queue(num_data_prefetch_queue)
-        self.generator = generator
-        self.daemon = True
-        self.start()
-
-    def run(self) -> None:
-        for item in self.generator:
-            self.queue.put(item)
-        self.queue.put(None)
-
-    def __next__(self):
-        next_item = self.queue.get()
-        if next_item is None:
-            raise StopIteration
-        return next_item
-
-    def __iter__(self):
-        return self
-
-
-class PrefetchDataLoader(DataLoader):
-    """A fast data prefetch dataloader.
-
-    Args:
-        num_data_prefetch_queue (int): How many early data load queues.
-        kwargs (dict): Other extended parameters.
-    """
-
-    def __init__(self, num_data_prefetch_queue: int, **kwargs) -> None:
-        self.num_data_prefetch_queue = num_data_prefetch_queue
-        super(PrefetchDataLoader, self).__init__(**kwargs)
-
-    def __iter__(self):
-        return PrefetchGenerator(super().__iter__(), self.num_data_prefetch_queue)
-
 
 
 class CUDAPrefetcher:

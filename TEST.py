@@ -1,4 +1,10 @@
-from train_irrdb import build_model
+import cv2
 
-res, ult = build_model()
-print(type(res), type(ult))
+img = cv2.imread(r'./data/all_img/CVC-09Daytime_000000.png')
+print(img.shape)
+
+from imgproc import image_resize
+
+out = image_resize(img, 1/4)
+
+print(out.shape)
