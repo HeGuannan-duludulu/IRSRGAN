@@ -102,14 +102,15 @@ def main():
               epoch,
               scaler,
               writer)
-        psnr, ssim = validate(rrdbnet_model,
-                              test_prefetcher,
-                              epoch,
-                              writer,
-                              psnr_model,
-                              ssim_model,
-                              "Test")
-        print("\n")
+        if epoch % irrdbnet_config.valid_print_frequency == 0:
+            psnr, ssim = validate(rrdbnet_model,
+                                  test_prefetcher,
+                                  epoch,
+                                  writer,
+                                  psnr_model,
+                                  ssim_model,
+                                  "Test")
+            print("\n")
 
         # Update LR
         scheduler.step()
@@ -143,7 +144,10 @@ def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher]:
                                             irrdbnet_config.upscale_factor,
                                             "Train")
 
-    test_datasets = TestImageDataset(irrdbnet_config.test_gt_images_dir, irrdbnet_config.test_lr_images_dir)
+    test_datasets = TrainValidImageDataset(irrdbnet_config.test_gt_images_dir,
+                                            irrdbnet_config.gt_image_size,
+                                            irrdbnet_config.upscale_factor,
+                                            "Valid")
 
     """将加载的数据集装载到DataLoader"""
     train_dataloader = DataLoader(train_datasets,

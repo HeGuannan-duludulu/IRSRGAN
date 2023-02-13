@@ -2,7 +2,7 @@
 import os
 
 # Prepare dataset
-os.system("python3 ./prepare_dataset.py --images_dir ../data/DIV2K/CVC-09_14(train)/DIV2K_train_HR --output_dir "
-          "../data/DIV2K/ESRGAN/train --image_size 544 --step 272 --num_workers 16")
-os.system("python3 ./prepare_dataset.py --images_dir ../data/DIV2K/CVC-09_14(train)/DIV2K_valid_HR --output_dir "
-          "../data/DIV2K/ESRGAN/valid --image_size 544 --step 544 --num_workers 16")
+os.system("python3 ./prepare_dataset.py --images_dir ../data/all_img --output_dir "
+          "../data/IRSRGAN/train --image_size 128 --num_workers 16")
+os.system("python3 ./split_train_valid_dataset.py --train_images_dir ../data/IRSRGAN/train --valid_images_dir "
+          "../data/IRSRGAN/valid --valid_samples_ratio 0.1")
