@@ -12,7 +12,7 @@ class Degradation:
         self.sf = scale_factor
         pass
 
-    def add_gaussian_noise(self):
+    def _add_gaussian_noise(self) -> np.ndarray:
         mean = 0.1
         sigma = 0.1
         image = np.asarray(self.img / 255, dtype=np.float32)  # 图片灰度标准化
@@ -20,27 +20,30 @@ class Degradation:
         output = image + noise  # 将噪声和图片叠加
         output = np.clip(output, 0, 1)
         output = np.uint8(output * 255)
-        return output
+        self.img = output
+        return self.img
 
-    def add_JPEG_noise(self):
+    def _add_JPEG_noise(self) -> np.ndarray:
         print('input_img:', self.img)
         quality_factor = random.randint(70, 95)
         # img = single2uint(img)
         result, encimg = cv2.imencode('.jpg', self.img, [int(cv2.IMWRITE_JPEG_QUALITY), quality_factor])
         img = cv2.imdecode(encimg, 0)
         print('after_jpeg', img)
+        self.img = img
         # img = cv2.cvtColor(uint2single(img), cv2.COLOR_BGR2RGB)
-        return img
+        return self.img
 
     def add_blur(self, sf=4):
         wd = 2.0 + 0.2 * sf
         k = self.fspecial('gaussian', 1 * random.randint(2, 5) + 3, wd * random.random())
 
         img = ndimage.filters.convolve(self.img, k, mode='mirror')
-
+        self.img = img
         return img
 
-    def fspecial_gaussian(self, hsize, sigma):
+    @staticmethod
+    def _fspecial_gaussian(hsize, sigma):
         hsize = [hsize, hsize]
         siz = [(hsize[0] - 1.0) / 2.0, (hsize[1] - 1.0) / 2.0]
         std = sigma
@@ -53,7 +56,8 @@ class Degradation:
             h = h / sumh
         return h
 
-    def fspecial_laplacian(self, alpha):
+    @staticmethod
+    def _fspecial_laplacian(alpha):
         print(alpha)
         alpha = max([0, min([alpha, 1])])
         h1 = alpha / (alpha + 1)
@@ -63,32 +67,26 @@ class Degradation:
         return h
 
     def fspecial(self, filter_type, *args, **kwargs):
-        '''
-        python code from:
-        https://github.com/ronaldosena/imagens-medicas-2/blob/40171a6c259edec7827a6693a93955de2bd39e76/Aulas/aula_2_-_uniform_filter/matlab_fspecial.py
-        '''
-        if filter_type == 'gaussian':
-            return self.fspecial_gaussian(*args, **kwargs)
-        if filter_type == 'laplacian':
-            return self.fspecial_laplacian(*args, **kwargs)
 
-    def uint2single(self):
+        if filter_type == 'gaussian':
+            return self._fspecial_gaussian(*args, **kwargs)
+        if filter_type == 'laplacian':
+            return self._fspecial_laplacian(*args, **kwargs)
+
+    def uint2single(self) -> np.ndarray:
         return np.float32(self.img / 255.)
 
-    def single2uint(self):
+    def single2uint(self) -> np.ndarray:
         return np.uint8((self.img.clip(0, 1) * 255.).round())
 
-    def random_crop(self, lq, hq, sf=4, lq_patchsize=64):
+    def random_crop(self, lq, lq_patchsize=64):
         h, w = lq.shape[:2]
         rnd_h = random.randint(0, h - lq_patchsize)
         rnd_w = random.randint(0, w - lq_patchsize)
         lq = lq[rnd_h:rnd_h + lq_patchsize, rnd_w:rnd_w + lq_patchsize]
+        return lq
 
-        rnd_h_H, rnd_w_H = int(rnd_h * sf), int(rnd_w * sf)
-        hq = hq[rnd_h_H:rnd_h_H + lq_patchsize * sf, rnd_w_H:rnd_w_H + lq_patchsize * sf]
-        return lq, hq
-
-    def degradation_bsrgan(self, sf=4, lq_patchsize=72, isp_model=None):
+    def degradation_bsrgan(self, sf=4, lq_patchsize=72):
         """
         This is the degradation model of BSRGAN from the paper
         "Designing a Practical Degradation Model for Deep Blind Image Super-Resolution"
@@ -154,15 +152,15 @@ class Degradation:
 
             elif i == 4:
                 # add Gaussian noise
-                img = self.add_gaussian_noise(img)
+                img = self._add_gaussian_noise(img)
 
             elif i == 5:
                 # add JPEG noise
                 if random.random() < jpeg_prob:
-                    img = self.add_JPEG_noise(img)
+                    img = self._add_JPEG_noise(img)
 
         # add final JPEG compression noise
-        img = self.add_JPEG_noise(img)
+        img = self._add_JPEG_noise(img)
 
         # random crop
         # img, hq = random_crop(img, hq, sf_ori, lq_patchsize)
@@ -171,5 +169,6 @@ class Degradation:
 
 
 if __name__ == '__main__':
-    print(123123)
-
+    img_ = cv2.imread(r'123.png')
+    aa = cv2.imshow('123', img_)
+    cv2.waitKey()
