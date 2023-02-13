@@ -1,45 +1,43 @@
 import numpy as np
 import random
+import copy
+
 from scipy import ndimage
 import scipy
 import cv2
 
-
 # noinspection SpellCheckingInspection
-class Degradation:
-    def __init__(self, img: np.ndarray, scale_factor: int):
-        self.img = img
-        self.sf = scale_factor
-        pass
+from typing import Tuple
 
-    def _add_gaussian_noise(self) -> np.ndarray:
+
+
+
+class Degradation:
+    def __init__(self, scale_factor: int):
+        self.sf = scale_factor
+        self.downsamplerate = self.sf / 2
+        self.size = 480
+
+    def _add_gaussian_noise(self, img: np.ndarray) -> np.ndarray:
         mean = 0.1
         sigma = 0.1
-        image = np.asarray(self.img / 255, dtype=np.float32)  # 图片灰度标准化
+        image = np.asarray(img / 255, dtype=np.float32)  # 图片灰度标准化
         noise = np.random.normal(mean, sigma, image.shape).astype(dtype=np.float32)  # 产生高斯噪声
         output = image + noise  # 将噪声和图片叠加
         output = np.clip(output, 0, 1)
         output = np.uint8(output * 255)
-        self.img = output
-        return self.img
+        return output
 
-    def _add_JPEG_noise(self) -> np.ndarray:
-        print('input_img:', self.img)
+    def _add_JPEG_noise(self, img) -> np.ndarray:
         quality_factor = random.randint(70, 95)
-        # img = single2uint(img)
-        result, encimg = cv2.imencode('.jpg', self.img, [int(cv2.IMWRITE_JPEG_QUALITY), quality_factor])
+        result, encimg = cv2.imencode('.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), quality_factor])
         img = cv2.imdecode(encimg, 0)
-        print('after_jpeg', img)
-        self.img = img
-        # img = cv2.cvtColor(uint2single(img), cv2.COLOR_BGR2RGB)
-        return self.img
+        return img
 
-    def add_blur(self, sf=4):
-        wd = 2.0 + 0.2 * sf
-        k = self.fspecial('gaussian', 1 * random.randint(2, 5) + 3, wd * random.random())
-
-        img = ndimage.filters.convolve(self.img, k, mode='mirror')
-        self.img = img
+    def add_blur(self, img):
+        wd = 2.0 + 0.2 * self.sf
+        k = self._fspecial('gaussian', 1 * random.randint(2, 5) + 3, wd * random.random())
+        img = ndimage.filters.convolve(img, k, mode='mirror')
         return img
 
     @staticmethod
@@ -66,109 +64,73 @@ class Degradation:
         h = np.array(h)
         return h
 
-    def fspecial(self, filter_type, *args, **kwargs):
+    def _fspecial(self, filter_type, *args, **kwargs):
 
         if filter_type == 'gaussian':
             return self._fspecial_gaussian(*args, **kwargs)
         if filter_type == 'laplacian':
             return self._fspecial_laplacian(*args, **kwargs)
 
-    def uint2single(self) -> np.ndarray:
-        return np.float32(self.img / 255.)
+    @staticmethod
+    def _uint2single(img) -> np.ndarray:
+        return np.float32(img / 255.)
 
-    def single2uint(self) -> np.ndarray:
-        return np.uint8((self.img.clip(0, 1) * 255.).round())
+    @staticmethod
+    def _single2uint(img) -> np.ndarray:
+        return np.uint8((img.clip(0, 1) * 255.).round())
 
-    def random_crop(self, lq, lq_patchsize=64):
-        h, w = lq.shape[:2]
-        rnd_h = random.randint(0, h - lq_patchsize)
-        rnd_w = random.randint(0, w - lq_patchsize)
-        lq = lq[rnd_h:rnd_h + lq_patchsize, rnd_w:rnd_w + lq_patchsize]
-        return lq
+    def _downsample(self, img) -> np.ndarray:
+        if np.random.rand() < 1:
+            img = cv2.resize(img, (int(1/self.downsamplerate * self.size), int(1/self.downsamplerate * self.size)),
+                             interpolation=random.choice([1, 2, 3]))
+        self.size = img.shape[0]
+        return img
 
-    def degradation_bsrgan(self, sf=4, lq_patchsize=72):
+    def _single2three(self, img):
+        img_src = np.expand_dims(img, axis=2)
+        img_src = np.concatenate((img_src, img_src, img_src), axis=-1)
+        return img_src
+
+    def second_degradation(self, img: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
         This is the degradation model of BSRGAN from the paper
         "Designing a Practical Degradation Model for Deep Blind Image Super-Resolution"
         ----------
         img: HXWXC, [0, 1], its size should be large than (lq_patchsizexsf)x(lq_patchsizexsf)
         sf: scale factor
-        isp_model: camera ISP model
+
 
         Returns
         -------
         img: low-quality patch, size: lq_patchsizeXlq_patchsizeXC, range: [0, 1]
         hq: corresponding high-quality patch, size: (lq_patchsizexsf)X(lq_patchsizexsf)XC, range: [0, 1]
         """
-        isp_prob, jpeg_prob, scale2_prob = 0.25, 0.9, 0.25
-        sf_ori = sf
 
-        h1, w1 = self.img.shape[:2]
-        # print(h1, w1)
-        img = self.img.copy()[:h1 - h1 % sf, :w1 - w1 % sf, ...]  # mod crop
-        h, w = img.shape[:2]
-        # print(h, w)
+        img = cv2.resize(img, (self.size, self.size))
+        hq = copy.deepcopy(img)
+        result_img = img
 
-        if h < lq_patchsize * sf or w < lq_patchsize * sf:
-            raise ValueError(f'img size ({h1}X{w1}) is too small!')
+        degradation_dic = {
+            '0': self.add_blur,
+            '1': self.add_blur,
+            '2': self._downsample,
+            '3': self._downsample,
+            '4': self._add_gaussian_noise,
+            '5': self._add_JPEG_noise,
+        }
+        shuffle_order = random.sample(range(6), 6)
+        for step_num in shuffle_order:
+            name = degradation_dic['{}'.format(step_num)]
+            result_img = degradation_dic['{}'.format(step_num)](result_img)
+        result_img = self._add_JPEG_noise(result_img)
+        result_img = self._single2three(result_img)
 
-        hq = img.copy()
-
-        if sf == 4 and random.random() < scale2_prob:  # downsample1
-            # if np.random.rand() < 0.5:
-            if np.random.rand() < 1:
-                img = cv2.resize(img, (int(1 / 2 * img.shape[1]), int(1 / 2 * img.shape[0])),
-                                 interpolation=random.choice([1, 2, 3]))
-            # img = np.clip(img, 0.0, 1.0)
-            sf = 2
-
-        shuffle_order = random.sample(range(7), 7)
-        idx1, idx2 = shuffle_order.index(2), shuffle_order.index(3)
-        if idx1 > idx2:  # keep downsample3 last
-            shuffle_order[idx1], shuffle_order[idx2] = shuffle_order[idx2], shuffle_order[idx1]
-
-        for i in shuffle_order:
-
-            if i == 0:
-                img = self.add_blur(img)
-
-            elif i == 1:
-                img = self.add_blur(img)
-
-            elif i == 2:
-                a, b = img.shape[1], img.shape[0]
-                # downsample2 modify 1
-                if random.random() < 1:
-                    sf1 = random.uniform(1, 2 * sf)
-                    img = cv2.resize(img, (int(1 / sf1 * img.shape[1]), int(1 / sf1 * img.shape[0])),
-                                     interpolation=random.choice([1, 2, 3]))
-
-                # img = np.clip(img, 0.0, 1.0)
-
-            elif i == 3:
-                # downsample3
-                img = cv2.resize(img, (int(1 / sf * a), int(1 / sf * b)), interpolation=random.choice([1, 2, 3]))
-                # img = np.clip(img, 0.0, 1.0)
-
-            elif i == 4:
-                # add Gaussian noise
-                img = self._add_gaussian_noise(img)
-
-            elif i == 5:
-                # add JPEG noise
-                if random.random() < jpeg_prob:
-                    img = self._add_JPEG_noise(img)
-
-        # add final JPEG compression noise
-        img = self._add_JPEG_noise(img)
-
-        # random crop
-        # img, hq = random_crop(img, hq, sf_ori, lq_patchsize)
-
-        return img, hq
+        return result_img, hq
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread(r'123.png')
-    aa = cv2.imshow('123', img_)
+    img_ = cv2.imread('../123.png', 0)
+    img, hq = Degradation(scale_factor=4).second_degradation(img_)
+    cv2.imshow('1234', img)
+    print(img.shape)
     cv2.waitKey()
