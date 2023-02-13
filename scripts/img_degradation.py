@@ -13,6 +13,10 @@ from typing import Tuple
 
 
 class Degradation:
+    """
+    input: 480X480X3
+    output: 120X120X3
+    """
     def __init__(self, scale_factor: int):
         self.sf = scale_factor
         self.downsamplerate = self.sf / 2
