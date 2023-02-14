@@ -8,17 +8,15 @@ from torch.backends import cudnn
 # Random seed to maintain reproducible results
 random.seed(0)
 torch.manual_seed(0)
-
 np.random.seed(0)
-# If GPU is not availble, then use cpu
-device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
-
-
+# Use GPU for training by default
+device = torch.device("cuda", 0)
 # Turning on when the image size does not change during training can speed up training
 cudnn.benchmark = True
 # When evaluating the performance of the SR model, whether to verify only the Y channel image data
 only_test_y_channel = True
 # Model architecture name
+d_arch_name = "discriminator"
 g_arch_name = "rrdbnet_x4"
 # Model arch config
 in_channels = 3
@@ -30,33 +28,42 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "RRDBNet_x4"
+exp_name = "ESRGAN_x4"
 
 if mode == "train":
     # Dataset address
-    train_gt_images_dir = f"./data/IRSRGAN/train"
+    train_gt_images_dir = f"./data/DIV2K/ESRGAN/train"
 
-    test_gt_images_dir = f"./data/IRSRGAN/valid"
-    #test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
+    test_gt_images_dir = f"./data/Set5/GTmod12"
+    test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
 
     gt_image_size = 128
-    batch_size = 32
+    batch_size = 16
     num_workers = 4
 
     # The address to load the pretrained model
-    pretrained_g_model_weights_path = ""
+    pretrained_d_model_weights_path = ""
+    pretrained_g_model_weights_path = "./results/RRDBNet_x4/g_best.pth.tar"
 
     # Incremental training and migration training
+    resume_d_model_weights_path = f""
     resume_g_model_weights_path = f""
 
-    # Total num epochs (200 iters)
-    epochs = 200
+    # Total num epochs (400,000 iters)
+    epochs = 94
 
-    # loss function weights
-    loss_weights = 1.0
+    # Loss function weight
+    pixel_weight = 0.01
+    content_weight = 1.0
+    adversarial_weight = 0.005
+
+    # Feature extraction layer parameter configuration
+    feature_model_extractor_node = "features.34"
+    feature_model_normalize_mean = [0.485, 0.456, 0.406]
+    feature_model_normalize_std = [0.229, 0.224, 0.225]
 
     # Optimizer parameter
-    model_lr = 2e-4
+    model_lr = 1e-4
     model_betas = (0.9, 0.99)
     model_eps = 1e-8
     model_weight_decay = 0.0
@@ -65,17 +72,17 @@ if mode == "train":
     model_ema_decay = 0.99998
 
     # Dynamically adjust the learning rate policy
-    lr_scheduler_step_size = epochs // 5
+    lr_scheduler_milestones = [int(epochs * 0.125), int(epochs * 0.250), int(epochs * 0.500), int(epochs * 0.750)]
     lr_scheduler_gamma = 0.5
 
     # How many iterations to print the training result
-    train_print_frequency = 10
-    valid_print_frequency = 10
+    train_print_frequency = 100
+    valid_print_frequency = 1
 
 if mode == "test":
     # Test data address
-    lr_dir = f"./test_dir/lr_dir"
+    lr_dir = f"./data/Set5/LRbicx{upscale_factor}"
     sr_dir = f"./results/test/{exp_name}"
-    gt_dir = "./test_dir/gt_dir"
+    gt_dir = "./data/Set5/GTmod12"
 
-    g_model_weights_path = "./results/pretrained_models/RRDBNet_x4-DFO2K-2e2a91f4.pth.tar"
+    g_model_weights_path = "./results/pretrained_models/ESRGAN_x4-DFO2K-25393df7.pth.tar"

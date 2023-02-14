@@ -102,7 +102,11 @@ def main():
               epoch,
               scaler,
               writer)
-        if epoch % irrdbnet_config.valid_print_frequency == 0:
+
+        # Update LR
+        scheduler.step()
+
+        if (epoch+1) % irrdbnet_config.valid_print_frequency == 0:
             psnr, ssim = validate(rrdbnet_model,
                                   test_prefetcher,
                                   epoch,
@@ -111,29 +115,25 @@ def main():
                                   ssim_model,
                                   "Test")
             print("\n")
-
-        # Update LR
-        scheduler.step()
-
-        """自动保存性能最好的模型"""
-        is_best = psnr > best_psnr and ssim > best_ssim
-        is_last = (epoch + 1) == irrdbnet_config.epochs
-        best_psnr = max(psnr, best_psnr)
-        best_ssim = max(ssim, best_ssim)
-        save_checkpoint({"epoch": epoch + 1,
-                         "best_psnr": best_psnr,
-                         "best_ssim": best_ssim,
-                         "state_dict": rrdbnet_model.state_dict(),
-                         "ema_state_dict": ema_rrdbnet_model.state_dict(),
-                         "optimizer": optimizer.state_dict(),
-                         "scheduler": scheduler.state_dict()},
-                        f"g_epoch_{epoch + 1}.pth.tar",
-                        samples_dir,
-                        results_dir,
-                        "g_best.pth.tar",
-                        "g_last.pth.tar",
-                        is_best,
-                        is_last)
+            """自动保存性能最好的模型"""
+            is_best = psnr > best_psnr and ssim > best_ssim
+            is_last = (epoch + 1) == irrdbnet_config.epochs
+            best_psnr = max(psnr, best_psnr)
+            best_ssim = max(ssim, best_ssim)
+            save_checkpoint({"epoch": epoch + 1,
+                             "best_psnr": best_psnr,
+                             "best_ssim": best_ssim,
+                             "state_dict": rrdbnet_model.state_dict(),
+                             "ema_state_dict": ema_rrdbnet_model.state_dict(),
+                             "optimizer": optimizer.state_dict(),
+                             "scheduler": scheduler.state_dict()},
+                            f"g_epoch_{epoch + 1}.pth.tar",
+                            samples_dir,
+                            results_dir,
+                            "g_best.pth.tar",
+                            "g_last.pth.tar",
+                            is_best,
+                            is_last)
 
 
 def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher]:
