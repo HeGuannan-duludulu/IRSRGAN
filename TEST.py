@@ -1,4 +1,4 @@
-import random
-shuffle_order = random.sample(range(6), 6)
-print(shuffle_order)
-print(0%10)
+from train_irsrgan import build_model
+
+aa = build_model()
+print(aa)
