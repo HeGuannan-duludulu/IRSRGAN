@@ -17,7 +17,7 @@ cudnn.benchmark = True
 only_test_y_channel = True
 # Model architecture name
 d_arch_name = "discriminator"
-g_arch_name = "rrdbnet_x4"
+g_arch_name = "irrdbnet_x4"
 # Model arch config
 in_channels = 3
 out_channels = 3
@@ -26,16 +26,16 @@ growth_channels = 32
 num_blocks = 23
 upscale_factor = 4
 # Current configuration parameter method
-mode = "train"
+mode = "test"
 # Experiment name, easy to save weights and log files
 exp_name = "IRSRGAN_x4"
 
 if mode == "train":
     # Dataset address
-    train_gt_images_dir = f"./data/DIV2K/ESRGAN/train"
+    train_gt_images_dir = f"./data/IRSRGAN/train"
 
-    test_gt_images_dir = f"./data/Set5/GTmod12"
-    test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
+    test_gt_images_dir = f"./data/IRSRGAN/valid"
+    #test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
 
     gt_image_size = 128
     batch_size = 32
@@ -43,14 +43,14 @@ if mode == "train":
 
     # The address to load the pretrained model
     pretrained_d_model_weights_path = ""
-    pretrained_g_model_weights_path = "./results/RRDBNet_x4/g_best.pth.tar"
+    pretrained_g_model_weights_path = ""
 
     # Incremental training and migration training
     resume_d_model_weights_path = f""
     resume_g_model_weights_path = f""
 
     # Total num epochs (400,000 iters)
-    epochs = 150
+    epochs = 100
 
     # Loss function weight
     pixel_weight = 0.01
@@ -76,13 +76,13 @@ if mode == "train":
     lr_scheduler_gamma = 0.5
 
     # How many iterations to print the training result
-    train_print_frequency = 100
-    valid_print_frequency = 1
+    train_print_frequency = 10
+    valid_print_frequency = 10
 
 if mode == "test":
     # Test data address
-    lr_dir = f"./data/Set5/LRbicx{upscale_factor}"
-    sr_dir = f"./results/test/{exp_name}"
-    gt_dir = "./data/Set5/GTmod12"
+    lr_dir = f"./test_dir/lr_dir"
+    sr_dir = f"./test_dir/sr_dir/{exp_name}"
+    gt_dir = "./test_dir/gt_dir"
 
-    g_model_weights_path = "./results/pretrained_models/ESRGAN_x4-DFO2K-25393df7.pth.tar"
+    g_model_weights_path = "./test_dir/full_IRSRGAN/g_epoch_100.pth.tar"

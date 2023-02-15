@@ -282,7 +282,7 @@ def content_loss(feature_model_extractor_node,
                                feature_model_normalize_mean,
                                feature_model_normalize_std)
 
-    return
+    return content_loss
 
 def test():
     gen = Generator()

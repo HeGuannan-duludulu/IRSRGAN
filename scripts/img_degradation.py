@@ -14,8 +14,8 @@ from typing import Tuple
 
 class Degradation:
     """
-    input: 480X480X3
-    output: 120X120X3
+    input: 128X128X3
+    output: 32X32X3
     """
     def __init__(self, scale_factor: int):
         self.sf = scale_factor
@@ -95,7 +95,7 @@ class Degradation:
         img_src = np.concatenate((img_src, img_src, img_src), axis=-1)
         return img_src
 
-    def second_degradation(self, img: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def second_degradation(self, img: np.ndarray) -> np.ndarray:
         """
         This is the degradation model of BSRGAN from the paper
         "Designing a Practical Degradation Model for Deep Blind Image Super-Resolution"
@@ -111,7 +111,6 @@ class Degradation:
         """
 
         img = cv2.resize(img, (self.size, self.size))
-        hq = copy.deepcopy(img)
         result_img = img
 
         degradation_dic = {
@@ -124,17 +123,17 @@ class Degradation:
         }
         shuffle_order = random.sample(range(6), 6)
         for step_num in shuffle_order:
-            name = degradation_dic['{}'.format(step_num)]
+            # name = degradation_dic['{}'.format(step_num)]
             result_img = degradation_dic['{}'.format(step_num)](result_img)
         result_img = self._add_JPEG_noise(result_img)
         result_img = self._single2three(result_img)
 
-        return result_img, hq
+        return result_img
 
 
 if __name__ == '__main__':
     img_ = cv2.imread('../123.png', 0)
-    img, hq = Degradation(scale_factor=4).second_degradation(img_)
+    img = Degradation(scale_factor=4).second_degradation(img_)
     cv2.imshow('1234', img)
     print(img.shape)
     cv2.waitKey()

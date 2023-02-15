@@ -114,51 +114,54 @@ def main():
               epoch,
               scaler,
               writer)
-        psnr, ssim = validate(g_model,
-                              test_prefetcher,
-                              epoch,
-                              writer,
-                              psnr_model,
-                              ssim_model,
-                              "Test")
+
         print("\n")
 
         # Update LR
         d_scheduler.step()
         g_scheduler.step()
 
-        # Automatically save the model with the highest index
-        is_best = psnr > best_psnr and ssim > best_ssim
-        is_last = (epoch + 1) == irsrgan_config.epochs
-        best_psnr = max(psnr, best_psnr)
-        best_ssim = max(ssim, best_ssim)
-        save_checkpoint({"epoch": epoch + 1,
-                         "best_psnr": best_psnr,
-                         "best_ssim": best_ssim,
-                         "state_dict": d_model.state_dict(),
-                         "optimizer": d_optimizer.state_dict(),
-                         "scheduler": d_scheduler.state_dict()},
-                        f"d_epoch_{epoch + 1}.pth.tar",
-                        samples_dir,
-                        results_dir,
-                        "d_best.pth.tar",
-                        "d_last.pth.tar",
-                        is_best,
-                        is_last)
-        save_checkpoint({"epoch": epoch + 1,
-                         "best_psnr": best_psnr,
-                         "best_ssim": best_ssim,
-                         "state_dict": g_model.state_dict(),
-                         "ema_state_dict": ema_g_model.state_dict(),
-                         "optimizer": g_optimizer.state_dict(),
-                         "scheduler": g_scheduler.state_dict()},
-                        f"g_epoch_{epoch + 1}.pth.tar",
-                        samples_dir,
-                        results_dir,
-                        "g_best.pth.tar",
-                        "g_last.pth.tar",
-                        is_best,
-                        is_last)
+        if (epoch + 1) % irsrgan_config.valid_print_frequency == 0:
+            psnr, ssim = validate(g_model,
+                                  test_prefetcher,
+                                  epoch,
+                                  writer,
+                                  psnr_model,
+                                  ssim_model,
+                                  "Test")
+
+            # Automatically save the model with the highest index
+            is_best = psnr > best_psnr and ssim > best_ssim
+            is_last = (epoch + 1) == irsrgan_config.epochs
+            best_psnr = max(psnr, best_psnr)
+            best_ssim = max(ssim, best_ssim)
+            save_checkpoint({"epoch": epoch + 1,
+                             "best_psnr": best_psnr,
+                             "best_ssim": best_ssim,
+                             "state_dict": d_model.state_dict(),
+                             "optimizer": d_optimizer.state_dict(),
+                             "scheduler": d_scheduler.state_dict()},
+                            f"d_epoch_{epoch + 1}.pth.tar",
+                            samples_dir,
+                            results_dir,
+                            "d_best.pth.tar",
+                            "d_last.pth.tar",
+                            is_best,
+                            is_last)
+            save_checkpoint({"epoch": epoch + 1,
+                             "best_psnr": best_psnr,
+                             "best_ssim": best_ssim,
+                             "state_dict": g_model.state_dict(),
+                             "ema_state_dict": ema_g_model.state_dict(),
+                             "optimizer": g_optimizer.state_dict(),
+                             "scheduler": g_scheduler.state_dict()},
+                            f"g_epoch_{epoch + 1}.pth.tar",
+                            samples_dir,
+                            results_dir,
+                            "g_best.pth.tar",
+                            "g_last.pth.tar",
+                            is_best,
+                            is_last)
 
 
 def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher]:
