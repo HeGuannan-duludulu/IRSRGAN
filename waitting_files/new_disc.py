@@ -72,7 +72,7 @@ class IDiscriminator(nn.Module):
         x10 = self.pool10(
             F.relu(self.bn8(self.conv10(F.relu(self.bn8(self.conv9(x8)))))))  # self.conv10(self.conv9(x8))
 
-        # flatten and concatenate
+        # flatten and concatenatemj
         features = torch.cat(
             (self.flatten(x2), self.flatten(x4), self.flatten(x6), self.flatten(x8), self.flatten(x10)), 1)
 

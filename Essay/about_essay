@@ -6,3 +6,4 @@ SRRESNET
 SRGAN
 VDSR/RCAN
 IRSRGAN
+ISRGAN(with second degradation)
