@@ -16,13 +16,12 @@ from dataset import CUDAPrefetcher, TrainValidImageDataset, TestImageDataset
 from image_quality_evaluate import PSNR, SSIM
 from utils import load_state_dict, make_directory, save_checkpoint, AverageMeter, ProgressMeter
 
-
 model_names = sorted(
     name for name in model.__dict__ if
     name.islower() and not name.startswith("__") and callable(model.__dict__[name]))
 
-def main():
 
+def main():
     start_epoch = 0
     best_psnr = 0.0
     best_ssim = 0.0
@@ -171,9 +170,9 @@ def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher]:
                                             irsrgan_config.upscale_factor,
                                             "Train")
     test_datasets = TrainValidImageDataset(irsrgan_config.test_gt_images_dir,
-                                            irsrgan_config.gt_image_size,
-                                            irsrgan_config.upscale_factor,
-                                            "Valid")
+                                           irsrgan_config.gt_image_size,
+                                           irsrgan_config.upscale_factor,
+                                           "Valid")
 
     # Generator all dataloader
     train_dataloader = DataLoader(train_datasets,
@@ -205,7 +204,8 @@ def build_model() -> [nn.Module, nn.Module, nn.Module]:
     g_model = g_model.to(device=irsrgan_config.device)
 
     # Create an Exponential Moving Average Model
-    ema_avg = lambda averaged_model_parameter, model_parameter, num_averaged: (1 - irsrgan_config.model_ema_decay) * averaged_model_parameter + irsrgan_config.model_ema_decay * model_parameter
+    ema_avg = lambda averaged_model_parameter, model_parameter, num_averaged: (
+                                                                                          1 - irsrgan_config.model_ema_decay) * averaged_model_parameter + irsrgan_config.model_ema_decay * model_parameter
     ema_g_model = AveragedModel(g_model, avg_fn=ema_avg)
 
     return d_model, g_model, ema_g_model

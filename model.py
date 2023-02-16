@@ -5,6 +5,7 @@ from torchvision import models
 from torchvision import transforms
 from torchvision.models.feature_extraction import create_feature_extractor
 
+
 class ConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, use_act, **kwargs):
         super().__init__()
@@ -142,7 +143,6 @@ class Discriminator(nn.Module):
         return self.classifier(x)
 
 
-
 class IDiscriminator(nn.Module):
     def __init__(self):
         super(IDiscriminator, self).__init__()
@@ -218,6 +218,7 @@ class IDiscriminator(nn.Module):
 
         return self.fc3(0.01 * self.fc2(self.act(self.fc1(features))))
 
+
 def initialize_weights(model, scale=0.1):
     for m in model.modules():
         if isinstance(m, nn.Conv2d):
@@ -275,6 +276,7 @@ class ContentLoss(nn.Module):
 
         return loss
 
+
 def content_loss(feature_model_extractor_node,
                  feature_model_normalize_mean,
                  feature_model_normalize_std) -> ContentLoss:
@@ -283,6 +285,7 @@ def content_loss(feature_model_extractor_node,
                                feature_model_normalize_std)
 
     return content_loss
+
 
 def test():
     gen = Generator()

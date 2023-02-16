@@ -28,7 +28,7 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_x4-(no_bn)"
+exp_name = "IRSRGAN_x4-second_degradation"
 
 if mode == "train":
     # Dataset address
