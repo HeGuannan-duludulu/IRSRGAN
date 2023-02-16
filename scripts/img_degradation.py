@@ -40,7 +40,7 @@ class Degradation:
 
     def add_blur(self, img):
         wd = 2.0 + 0.2 * self.sf
-        k = self._fspecial('gaussian', 1 * random.randint(2, 5) + 3, wd * random.random())
+        k = self._fspecial('gaussian', 1 * random.randint(2, 5) + 2, wd * random.random())
         img = ndimage.filters.convolve(img, k, mode='mirror')
         return img
 

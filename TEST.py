@@ -1,4 +1,7 @@
-from train_irsrgan import build_model
+import cv2
 
-aa = build_model()
-print(aa)
+org = cv2.imread('123.png')
+print(org.shape)
+
+gray = cv2.cvtColor(org, cv2.COLOR_BGR2GRAY)
+print(gray.shape)

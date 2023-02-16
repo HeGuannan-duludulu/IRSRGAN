@@ -64,6 +64,7 @@ class TrainValidImageDataset(Dataset):
             raise ValueError("Unsupported data processing model, please use `Train` or `Valid`.")
 
         #lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
+        gt_image = cv2.cvtColor(gt_image, cv2.COLOR_BGR2GRAY)
         lr_image = self.second_degradation(gt_image)
         """degradation funtion to replace the img_resize func here"""
 
