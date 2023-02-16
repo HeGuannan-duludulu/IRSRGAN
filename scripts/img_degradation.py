@@ -20,7 +20,7 @@ class Degradation:
     def __init__(self, scale_factor: int):
         self.sf = scale_factor
         self.downsamplerate = self.sf / 2
-        self.size = 480
+        self.size = 128
 
     def _add_gaussian_noise(self, img: np.ndarray) -> np.ndarray:
         mean = 0.1
