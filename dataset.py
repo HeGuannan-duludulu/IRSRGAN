@@ -12,6 +12,7 @@ from torch.utils.data import Dataset, DataLoader
 from typing import Dict
 
 import imgproc
+from scripts.img_degradation import Degradation
 
 __all__ = [
     "TrainValidImageDataset", "TestImageDataset",
@@ -44,6 +45,9 @@ class TrainValidImageDataset(Dataset):
         self.upscale_factor = upscale_factor
         self.mode = mode
 
+        self.second_degradation = Degradation(scale_factor=4).second_degradation
+
+
     def __getitem__(self, batch_index: int) -> [Dict[str, Tensor], Dict[str, Tensor]]:
         # Read a batch of image data
         gt_image = cv2.imread(self.image_file_names[batch_index]).astype(np.float32) / 255.
@@ -59,7 +63,8 @@ class TrainValidImageDataset(Dataset):
         else:
             raise ValueError("Unsupported data processing model, please use `Train` or `Valid`.")
 
-        lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
+        #lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
+        lr_image = self.second_degradation(gt_image)
         """degradation funtion to replace the img_resize func here"""
 
         # BGR convert RGB
