@@ -84,10 +84,10 @@ class Degradation:
         return np.uint8((img.clip(0, 1) * 255.).round())
 
     def _downsample(self, img) -> np.ndarray:
-        if np.random.rand() < 1:
-            img = cv2.resize(img, (int(1/self.downsamplerate * self.size), int(1/self.downsamplerate * self.size)),
+        if True:
+            img = cv2.resize(img, None, fx=0.5, fy=0.5,
                              interpolation=random.choice([1, 2, 3]))
-        self.size = img.shape[0]
+        #self.size = img.shape[0]
         return img
 
     def _single2three(self, img):
@@ -132,7 +132,9 @@ class Degradation:
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../123.png', 0)
+    img_ = cv2.imread('../123.png').astype(np.float32) / 255.
+    img_ = cv2.cvtColor(img_, cv2.COLOR_BGR2GRAY)
+    img_ = img_.astype(np.float32) * 255.
     img = Degradation(scale_factor=4).second_degradation(img_)
     cv2.imshow('1234', img)
     print(img.shape)
