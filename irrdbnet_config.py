@@ -30,7 +30,7 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "RRDBNet_x4"
+exp_name = "IRRDBNet_x4-psnr"
 
 if mode == "train":
     # Dataset address
@@ -47,10 +47,10 @@ if mode == "train":
     pretrained_g_model_weights_path = ""
 
     # Incremental training and migration training
-    resume_g_model_weights_path = f""
+    resume_g_model_weights_path = f"./samples/IRRDBNet_x4-psnr/g_epoch_100.pth.tar"
 
     # Total num epochs (200 iters)
-    epochs = 200
+    epochs = 150
 
     # loss function weights
     loss_weights = 1.0

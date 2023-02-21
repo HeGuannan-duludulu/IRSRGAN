@@ -59,11 +59,11 @@ def main():
     if irsrgan_config.resume_d_model_weights_path:
         d_model, _, start_epoch, best_psnr, best_ssim, optimizer, scheduler = load_state_dict(
             d_model,
-            irsrgan_config.pretrained_d_model_weights_path,
+            irsrgan_config.resume_d_model_weights_path,
             optimizer=d_optimizer,
             scheduler=d_scheduler,
             load_mode="resume")
-        print("Loaded pretrained model weights.")
+        print("Loaded d pretrained model weights.")
     else:
         print("Resume training d model not found. Start training from scratch.")
 
@@ -71,12 +71,12 @@ def main():
     if irsrgan_config.resume_g_model_weights_path:
         lsrresnet_model, ema_lsrresnet_model, start_epoch, best_psnr, best_ssim, optimizer, scheduler = load_state_dict(
             g_model,
-            irsrgan_config.pretrained_g_model_weights_path,
+            irsrgan_config.resume_g_model_weights_path,
             ema_model=ema_g_model,
             optimizer=g_optimizer,
             scheduler=g_scheduler,
             load_mode="resume")
-        print("Loaded pretrained model weights.")
+        print("Loaded g pretrained model weights.")
     else:
         print("Resume training g model not found. Start training from scratch.")
 

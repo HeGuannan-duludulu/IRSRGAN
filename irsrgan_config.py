@@ -28,7 +28,7 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "test"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_x4"
+exp_name = "IRSRGAN_ORG"
 
 if mode == "train":
     # Dataset address
@@ -50,7 +50,7 @@ if mode == "train":
     resume_g_model_weights_path = f""
 
     # Total num epochs (400,000 iters)
-    epochs = 100
+    epochs = 150
 
     # Loss function weight
     pixel_weight = 0.01
@@ -63,7 +63,7 @@ if mode == "train":
     feature_model_normalize_std = [0.229, 0.224, 0.225]
 
     # Optimizer parameter
-    model_lr = 2e-4
+    model_lr = 3e-4
     model_betas = (0.9, 0.99)
     model_eps = 1e-8
     model_weight_decay = 0.0

@@ -1,0 +1,24 @@
+去掉bn之后发现 对抗损失和pixel损失都是nan，内容损失一直在上升
+二次退化之后，生成的都是噪声
+
+irrdbnet vs rrdbnet(esrgan)
+
+之前的全连接，我感觉是判别器过于强势，把真实样本和sr都判别成假的。所以我采用了esrgan原版判别器训练150轮。
+
+
+srcnn训练完成150轮次
+srgan训练完成150轮次
+srresnet训练完成100轮次
+esrgan原版判别器训练150轮
+edsr训练完成150轮次
+ESPCNN 150轮
+
+待训练：
+irsenet效果很好，可以继续训练到150轮
+
+图片：
+流程图
+结构图（gen  disc）
+loss
+相对论判别器
+psnr+图片对比

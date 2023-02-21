@@ -1,7 +1,14 @@
-import cv2
+import torch
 
-org = cv2.imread('123.png')
-print(org.shape)
 
-gray = cv2.cvtColor(org, cv2.COLOR_BGR2GRAY)
-print(gray.shape)
+
+
+
+
+a = torch.randn(4, 4)
+
+
+b = torch.mean(a)
+print(a)
+
+print(b)

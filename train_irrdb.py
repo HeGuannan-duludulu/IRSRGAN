@@ -62,7 +62,7 @@ def main():
     if irrdbnet_config.resume_g_model_weights_path:
         rrdbnet_model, ema_rrdbnet_model, start_epoch, best_psnr, best_ssim, optimizer, scheduler = load_state_dict(
             rrdbnet_model,
-            irrdbnet_config.pretrained_g_model_weights_path,
+            irrdbnet_config.resume_g_model_weights_path,
             ema_rrdbnet_model,
             optimizer,
             scheduler,
