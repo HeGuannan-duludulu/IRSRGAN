@@ -28,7 +28,7 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "test"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_ORG"
+exp_name = "IRSRGAN_ORG_epoch250"
 
 if mode == "train":
     # Dataset address
@@ -85,4 +85,4 @@ if mode == "test":
     sr_dir = f"./test_dir/sr_dir/{exp_name}"
     gt_dir = "./test_dir/gt_dir"
 
-    g_model_weights_path = "./test_dir/irsrrdb-psnr/g_best.pth.tar"
+    g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"

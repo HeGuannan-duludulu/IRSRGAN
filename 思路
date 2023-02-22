@@ -5,20 +5,25 @@ irrdbnet vs rrdbnet(esrgan)
 
 之前的全连接，我感觉是判别器过于强势，把真实样本和sr都判别成假的。所以我采用了esrgan原版判别器训练150轮。
 
-
+已训练：
 srcnn训练完成150轮次
 srgan训练完成150轮次
 srresnet训练完成100轮次
 esrgan原版判别器训练150轮
 edsr训练完成150轮次
 ESPCNN 150轮
+irsenet训练完成250轮次
 
-待训练：
-irsenet效果很好，可以继续训练到150轮
 
 图片：
 流程图
 结构图（gen  disc）
+残差块图
 loss
 相对论判别器
-psnr+图片对比
+psnr+图片对比：
+ gt  | lr       | srcnn | espcnn   | edsr
+ gt  | srresnet | srgan | irrdbnet | irsrgan
+
+采用psnr预训练生成器作为预训练模型。和刚开始就训练的形成对比。
+ 采用psnr预训练生成器(数据随机退化模糊)作为预训练模型, 和不是随机退化的对比。

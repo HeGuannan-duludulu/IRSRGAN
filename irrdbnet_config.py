@@ -41,7 +41,7 @@ if mode == "train":
 
     gt_image_size = 128
     batch_size = 32
-    num_workers = 4
+    num_workers = 8
 
     # The address to load the pretrained model
     pretrained_g_model_weights_path = ""
@@ -50,7 +50,7 @@ if mode == "train":
     resume_g_model_weights_path = f"./samples/IRRDBNet_x4-psnr/g_epoch_100.pth.tar"
 
     # Total num epochs (200 iters)
-    epochs = 150
+    epochs = 250
 
     # loss function weights
     loss_weights = 1.0
