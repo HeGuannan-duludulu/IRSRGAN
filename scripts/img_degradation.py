@@ -13,9 +13,6 @@ input: 128X128X3
 output: 32X32X3
 """
 
-scale_factor = 4
-downsample_rate = 2
-
 
 def _add_gaussian_noise(img: np.ndarray) -> np.ndarray:
     """
@@ -41,7 +38,7 @@ def _add_JPEG_noise(img) -> np.ndarray:
     """
     quality_factor = random.randint(70, 95)
     result, encimg = cv2.imencode('.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), quality_factor])
-    img = cv2.imdecode(encimg, 0)
+    img = cv2.imdecode(encimg, cv2.IMREAD_UNCHANGED)
     return img
 
 
@@ -92,6 +89,11 @@ def _single2three(img):
 
 
 def random_degradation(image: np.ndarray) -> np.ndarray:
+    """
+    random degradation
+    :param image: image.astype(np.float32)/255  size(Cx128x128)
+    :return: size(Cx32x32)
+    """
     result_img = image
     result_img = _single2uint(result_img)
     degradation_dic = {
@@ -104,7 +106,7 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
     }
     shuffle_order = random.sample(range(6), 6)
     for step_num in shuffle_order:
-        # name = degradation_dic['{}'.format(step_num)]
+        name = degradation_dic['{}'.format(step_num)]
         result_img = degradation_dic['{}'.format(step_num)](result_img)
     result_img = _add_JPEG_noise(result_img)
     result_img = _uint2single(result_img)
@@ -113,8 +115,9 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../test_dir/gt_dir/2.png').astype(np.float32) / 255
+    img_ = cv2.imread('../test_dir/gt_dir/123.png').astype(np.float32) / 255
+    print(img_.shape)
     img_ = random_degradation(img_)
-    print(img_)
+    print(img_.shape)
     cv2.imwrite('12345.png', img_)
     cv2.waitKey()
