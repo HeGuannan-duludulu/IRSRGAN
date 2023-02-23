@@ -6,8 +6,6 @@ from scipy import ndimage
 import scipy
 import cv2
 
-# noinspection SpellCheckingInspection
-from typing import Tuple
 
 
 
@@ -23,8 +21,8 @@ class Degradation:
         self.size = 128
 
     def _add_gaussian_noise(self, img: np.ndarray) -> np.ndarray:
-        mean = 0.1
-        sigma = 0.1
+        mean = 0.01
+        sigma = 0.01
         image = np.asarray(img / 255, dtype=np.float32)  # 图片灰度标准化
         noise = np.random.normal(mean, sigma, image.shape).astype(dtype=np.float32)  # 产生高斯噪声
         output = image + noise  # 将噪声和图片叠加
@@ -39,7 +37,7 @@ class Degradation:
         return img
 
     def add_blur(self, img):
-        wd = 2.0 + 0.2 * self.sf
+        wd = 0.2 * self.sf
         k = self._fspecial('gaussian', 1 * random.randint(2, 5) + 2, wd * random.random())
         img = ndimage.filters.convolve(img, k, mode='mirror')
         return img
@@ -132,10 +130,10 @@ class Degradation:
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../123.png').astype(np.float32) / 255.
+    img_ = cv2.imread('../test_dir/gt_dir/2.png').astype(np.float32) / 255.
     img_ = cv2.cvtColor(img_, cv2.COLOR_BGR2GRAY)
     img_ = img_.astype(np.float32) * 255.
     img = Degradation(scale_factor=4).second_degradation(img_)
-    cv2.imshow('1234', img)
+    cv2.imwrite('12345.jpg', img)
     print(img.shape)
     cv2.waitKey()

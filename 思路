@@ -9,10 +9,14 @@ irrdbnet vs rrdbnet(esrgan)
 srcnn训练完成150轮次
 srgan训练完成150轮次
 srresnet训练完成100轮次
-esrgan原版判别器训练150轮
+irsrgan esrgan原版判别器训练150轮次
 edsr训练完成150轮次
-ESPCNN 150轮
+ESPCNN 150轮次
 irsenet训练完成250轮次
+
+待训练：
+采用psnr模型作为预训练的irsrgan
+在数据增强阶段，引入随机模糊退化。
 
 
 图片：
@@ -21,9 +25,19 @@ irsenet训练完成250轮次
 残差块图
 loss
 相对论判别器
+
+对比实验：
 psnr+图片对比：
  gt  | lr       | srcnn | espcnn   | edsr
  gt  | srresnet | srgan | irrdbnet | irsrgan
 
+
 采用psnr预训练生成器作为预训练模型。和刚开始就训练的形成对比。
- 采用psnr预训练生成器(数据随机退化模糊)作为预训练模型, 和不是随机退化的对比。
+
+
+采用psnr预训练生成器(数据随机退化模糊)作为预训练模型, 和不是随机退化的对比。
+
+
+不能修改损失函数。
+不修改判别器。
+上采样也不变

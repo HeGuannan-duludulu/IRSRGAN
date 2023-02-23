@@ -26,9 +26,10 @@ growth_channels = 32
 num_blocks = 23
 upscale_factor = 4
 # Current configuration parameter method
-mode = "test"
+mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_ORG_epoch250"
+exp_name = "IRSRGAN_org_with_pretrained"
+#exp_name = "IRRDB_x4"
 
 if mode == "train":
     # Dataset address
@@ -43,7 +44,7 @@ if mode == "train":
 
     # The address to load the pretrained model
     pretrained_d_model_weights_path = ""
-    pretrained_g_model_weights_path = ""
+    pretrained_g_model_weights_path = "./results/IRRDBNet_x4-psnr/g_last.pth.tar"
 
     # Incremental training and migration training
     resume_d_model_weights_path = f""
@@ -76,8 +77,8 @@ if mode == "train":
     lr_scheduler_gamma = 0.5
 
     # How many iterations to print the training result
-    train_print_frequency = 10
-    valid_print_frequency = 10
+    train_print_frequency = 5
+    valid_print_frequency = 5
 
 if mode == "test":
     # Test data address
@@ -85,4 +86,5 @@ if mode == "test":
     sr_dir = f"./test_dir/sr_dir/{exp_name}"
     gt_dir = "./test_dir/gt_dir"
 
-    g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"
+    #g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"
+    g_model_weights_path = "./samples/IRRDBNet_x4-psnr/g_epoch_250.pth.tar"

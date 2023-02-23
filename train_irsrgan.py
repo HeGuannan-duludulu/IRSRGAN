@@ -51,7 +51,7 @@ def main():
     print("Check whether to load pretrained g model weights...")
     if irsrgan_config.pretrained_g_model_weights_path:
         g_model = load_state_dict(g_model, irsrgan_config.pretrained_g_model_weights_path)
-        print(f"Loaded `{irsrgan_config.pretrained_g_model_weights_path}` pretrained model weights successfully.")
+        print(f"Loaded `{irsrgan_config.pretrained_g_model_weights_path}` pretrained g model weights successfully.")
     else:
         print("Pretrained g model weights not found.")
 
