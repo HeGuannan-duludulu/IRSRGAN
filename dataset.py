@@ -1,6 +1,7 @@
 
 """Realize the function of dataset preparation."""
 import os
+import random
 import queue
 import threading
 
@@ -44,8 +45,6 @@ class TrainValidImageDataset(Dataset):
         self.gt_image_size = gt_image_size
         self.upscale_factor = upscale_factor
         self.mode = mode
-
-
 
     def __getitem__(self, batch_index: int) -> [Dict[str, Tensor], Dict[str, Tensor]]:
         # Read a batch of image data
