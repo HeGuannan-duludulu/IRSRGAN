@@ -14,7 +14,7 @@ loss
 
 对比实验：
 psnr+图片对比：
- gt  | lr       | srcnn | espcnn   | edsr
+ gt  | lr biucbic| srcnn | espcnn   | edsr
  gt  | srresnet | srgan | irrdbnet | irsrgan
 
 图表：
@@ -31,6 +31,9 @@ pretrained?  |  x    |   x   |  o    |   o
 -------------|-------|-------|-------|-------
 random_deg?  |  x    |   o   |  x    |   o
 -------------|-------|-------|-------|-------
+                fig     fig     fig     fig
+                ...     ...    ...     ...
+
 在数据增强阶段引入随机退化
 
 1:IRSRGAN from scratch
@@ -51,5 +54,7 @@ irsenet训练完成250轮次
 训练中：
 3
 待训练：
-2
-4
+2 清空config pre-trained， 在datasets设置random_deg
+4 config pre-trained设置250轮次的psnr生成器，在datasets设置random_deg
+
+1234效果最好的改变其吧batch_size 16, 48 变成5， 6 再测试其参数
