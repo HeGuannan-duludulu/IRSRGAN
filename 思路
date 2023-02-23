@@ -11,14 +11,15 @@ irrdbnet vs rrdbnet(esrgan)
 残差块图
 loss
 相对论判别器
+学习率动态衰减
+图表：
+采用psnr预训练生成器作为预训练模型。和刚开始就训练的形成对比。
 
 对比实验：
 psnr+图片对比：
  gt  | lr biucbic| srcnn | espcnn   | edsr
  gt  | srresnet | srgan | irrdbnet | irsrgan
 
-图表：
-采用psnr预训练生成器作为预训练模型。和刚开始就训练的形成对比。
 
 
 不能修改损失函数。
