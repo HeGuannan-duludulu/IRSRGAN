@@ -59,3 +59,4 @@ irsenet训练完成250轮次
 4 config pre-trained设置250轮次的psnr生成器，在datasets设置random_deg
 
 1234效果最好的改变其吧batch_size 16, 48 变成5， 6 再测试其参数
+如果效果不好，就放弃random_deg吧
