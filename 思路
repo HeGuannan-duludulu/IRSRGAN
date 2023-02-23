@@ -36,7 +36,19 @@ psnr+图片对比：
 
 在数据增强阶段引入随机退化
 
-
 不能修改损失函数。
 不修改判别器。
 上采样也不变
+
+                1       2       3       4
+-------------|-------|-------|-------|-------
+pretrained?  |  x    |   x   |  o    |   o
+-------------|-------|-------|-------|-------
+random_deg?  |  x    |   o   |  x    |   o
+-------------|-------|-------|-------|-------
+
+
+1:IRSRGAN from scratch
+2:IRSRGAN from scratch but use random_deg
+3:IRSRGAN use pre-trained model but without random_deg
+4:IRSRGAN use pre-trained model and use random_deg
