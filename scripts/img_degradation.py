@@ -106,7 +106,6 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
     }
     shuffle_order = random.sample(range(6), 6)
     for step_num in shuffle_order:
-        name = degradation_dic['{}'.format(step_num)]
         result_img = degradation_dic['{}'.format(step_num)](result_img)
     result_img = _add_JPEG_noise(result_img)
     result_img = _uint2single(result_img)
