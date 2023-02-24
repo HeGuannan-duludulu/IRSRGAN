@@ -26,7 +26,7 @@ psnr+图片对比：
 不修改判别器。
 上采样也不变
 
-              1(done)  2(non)  3(ing)   4(non)
+              1(done)  2(non)  3(done)   4(non)
 -------------|-------|-------|-------|-------
 pretrained?  |  x    |   x   |  o    |   o
 -------------|-------|-------|-------|-------
@@ -47,15 +47,16 @@ random_deg?  |  x    |   o   |  x    |   o
 srcnn训练完成150轮次
 srgan训练完成150轮次
 srresnet训练完成100轮次
-irsrgan esrgan原版判别器训练150轮次(3)
+irsrgan esrgan原版判别器训练150轮次(1)
 edsr训练完成150轮次
 ESPCNN 150轮次
 irsenet训练完成250轮次
+3
 
 训练中：
-3
+
 待训练：
-2 清空config pre-trained， 在datasets设置random_deg
+2 清空config pre-trained， 在datasets设置random_deg, 周期设置为10
 4 config pre-trained设置250轮次的psnr生成器，在datasets设置random_deg
 
 1234效果最好的改变其吧batch_size 16, 48 变成5， 6 再测试其参数

@@ -28,7 +28,7 @@ upscale_factor = 4
 # Current configuration parameter method
 mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_org_with_pretrained"
+exp_name = "IRSRGAN_org_with_pretrained(lr=3e10-4)"
 #exp_name = "IRRDB_x4"
 
 if mode == "train":
@@ -74,7 +74,7 @@ if mode == "train":
 
     # Dynamically adjust the learning rate policy
     lr_scheduler_milestones = [int(epochs * 0.125), int(epochs * 0.250), int(epochs * 0.500), int(epochs * 0.750)]
-    lr_scheduler_gamma = 0.5
+    lr_scheduler_gamma = 1
 
     # How many iterations to print the training result
     train_print_frequency = 5
@@ -86,5 +86,5 @@ if mode == "test":
     sr_dir = f"./test_dir/sr_dir/{exp_name}"
     gt_dir = "./test_dir/gt_dir"
 
-    #g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"
-    g_model_weights_path = "./samples/IRRDBNet_x4-psnr/g_epoch_250.pth.tar"
+    g_model_weights_path = "./test_dir/IRSRGAN_with_pre/g_best.pth.tar"
+    #g_model_weights_path = "./samples/IRRDBNet_x4-psnr/g_epoch_250.pth.tar"
