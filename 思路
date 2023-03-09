@@ -12,6 +12,8 @@ irrdbnet vs rrdbnet(esrgan)
 loss
 相对论判别器
 学习率动态衰减
+随机退化
+
 图表：
 采用psnr预训练生成器作为预训练模型。和刚开始就训练的形成对比。
 
@@ -52,12 +54,15 @@ edsr训练完成150轮次
 ESPCNN 150轮次
 irsenet训练完成250轮次
 3
+2 清空config pre-trained， 在datasets设置random_deg
+4 config pre-trained设置250轮次的psnr生成器，在datasets设置random_deg
 
 训练中：
 
+
 待训练：
-2 清空config pre-trained， 在datasets设置random_deg, 周期设置为10
-4 config pre-trained设置250轮次的psnr生成器，在datasets设置random_deg
+
+
 
 1234效果最好的改变其吧batch_size 16, 48 变成5， 6 再测试其参数
 如果效果不好，就放弃random_deg吧

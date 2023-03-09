@@ -1,4 +1,3 @@
-
 import random
 
 import numpy as np
@@ -26,17 +25,17 @@ growth_channels = 32
 num_blocks = 23
 upscale_factor = 4
 # Current configuration parameter method
-mode = "train"
+mode = "test"
 # Experiment name, easy to save weights and log files
-exp_name = "IRSRGAN_org_with_pretrained(lr=3e10-4)"
-#exp_name = "IRRDB_x4"
+exp_name = "IRSRGAN_org_with_pretrained(random_deg)"
+# exp_name = "IRRDB_x4"
 
 if mode == "train":
     # Dataset address
     train_gt_images_dir = f"./data/IRSRGAN/train"
 
     test_gt_images_dir = f"./data/IRSRGAN/valid"
-    #test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
+    # test_lr_images_dir = f"./data/Set5/LRbicx{upscale_factor}"
 
     gt_image_size = 128
     batch_size = 32
@@ -44,7 +43,7 @@ if mode == "train":
 
     # The address to load the pretrained model
     pretrained_d_model_weights_path = ""
-    pretrained_g_model_weights_path = "./results/IRRDBNet_x4-psnr/g_last.pth.tar"
+    pretrained_g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"
 
     # Incremental training and migration training
     resume_d_model_weights_path = f""
@@ -86,5 +85,6 @@ if mode == "test":
     sr_dir = f"./test_dir/sr_dir/{exp_name}"
     gt_dir = "./test_dir/gt_dir"
 
-    g_model_weights_path = "./test_dir/IRSRGAN_with_pre/g_best.pth.tar"
-    #g_model_weights_path = "./samples/IRRDBNet_x4-psnr/g_epoch_250.pth.tar"
+    # g_model_weights_path = "./test_dir/IRSRGAN_org_with_pretrained(lr=3e10-4)/g_epoch_95.pth.tar"
+    # g_model_weights_path = "./test_dir/irsrrdb-psnr/g_epoch_250.pth.tar"
+    g_model_weights_path = "./test_dir/IRSRGAN_org_with_pretrained(random_deg)/g_epoch_95.pth.tar"

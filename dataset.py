@@ -58,11 +58,11 @@ class TrainValidImageDataset(Dataset):
             raise ValueError("Unsupported data processing model, please use `Train` or `Valid`.")
 
         # This is for random degradation
-        # if random.random() < 0.25:
-        # lr_image = random_degradation(gt_image)
-        # else:
+        if random.random() < 0.25:
+            lr_image = random_degradation(gt_image)
+        else:
+            lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
         # lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
-        lr_image = imgproc.image_resize(gt_image, 1 / self.upscale_factor)
 
         """degradation funtion to replace the img_resize func here"""
 
