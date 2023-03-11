@@ -9,12 +9,6 @@ import imgproc
 import model
 from utils import make_directory
 
-test_path = "./test_dir/"
-g_model_name = "IRSRGAN_org_with_pretrained(lr=3e10-4)/g_best.pth.tar"
-g_model_weights_path = os.path.join(test_path, g_model_name)
-
-sr_dir = f"./test_dir/sr_dir/{g_model_name}"
-
 
 def main() -> None:
     # Initialize the super-resolution bsrgan_model
@@ -59,4 +53,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    for i in range(135, 0, -5):
+        num = i
+        test_path = "./test_dir/"
+        g_model_name = "IRSRGAN_org_with_pretrained(lr=3e10-4)/g_epoch_{}.pth.tar".format(num)
+        g_model_weights_path = os.path.join(test_path, g_model_name)
+
+        sr_dir = f"./test_dir/sr_dir/{g_model_name}"
+        main()
