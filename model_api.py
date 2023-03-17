@@ -53,11 +53,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    for i in range(135, 0, -5):
-        num = i
-        test_path = "./test_dir/"
-        g_model_name = "IRSRGAN_org_with_pretrained(lr=3e10-4)/g_epoch_{}.pth.tar".format(num)
-        g_model_weights_path = os.path.join(test_path, g_model_name)
+    num = 140
+    test_path = "./test_dir/"
+    g_model_name = "IRSRGAN_org_with_pretrained(random_deg)/g_epoch_{}.pth.tar".format(num)
+    g_model_weights_path = os.path.join(test_path, g_model_name)
 
-        sr_dir = f"./test_dir/sr_dir/{g_model_name}"
-        main()
+    sr_dir = f"./test_dir/sr_dir/{g_model_name}"
+    main()

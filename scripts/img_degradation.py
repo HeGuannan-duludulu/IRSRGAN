@@ -2,8 +2,6 @@ import numpy as np
 import random
 import copy
 
-from scipy import ndimage
-import scipy
 import cv2
 
 __all__ = ["random_degradation"]
@@ -12,7 +10,9 @@ __all__ = ["random_degradation"]
 input: 128X128X3
 output: 32X32X3
 """
-
+#num = 1
+#blur_num = 1
+#jpeg_num = 1
 
 def _add_gaussian_noise(img: np.ndarray) -> np.ndarray:
     """
@@ -27,6 +27,7 @@ def _add_gaussian_noise(img: np.ndarray) -> np.ndarray:
     output = image + noise  # 将噪声和图片叠加
     output = np.clip(output, 0, 1)
     output = np.uint8(output * 255)
+    #cv2.imwrite('gas.png', output)
     return output
 
 
@@ -36,9 +37,12 @@ def _add_JPEG_noise(img) -> np.ndarray:
     :param img: input image
     :return: image with jpeg noise
     """
+    #global jpeg_num
     quality_factor = random.randint(70, 95)
     result, encimg = cv2.imencode('.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), quality_factor])
     img = cv2.imdecode(encimg, cv2.IMREAD_UNCHANGED)
+    #cv2.imwrite('jpeg{}.png'.format(jpeg_num), img)
+    #jpeg_num += 1
     return img
 
 
@@ -48,7 +52,10 @@ def _add_blur(img):
     :param img: input image
     :return: blurry image
     """
+    #global blur_num
     gausBlur = cv2.GaussianBlur(img, (3, 3), 0)
+    #cv2.imwrite('blur{}.png'.format(blur_num), gausBlur)
+    #blur_num += 1
     return gausBlur
 
 
@@ -71,9 +78,12 @@ def _downsample(img) -> np.ndarray:
     :param img: input image
     :return: 0.5 * image_org_size, 0.5 * image_org_size
     """
+    #global num
     if True:
         img = cv2.resize(img, None, fx=0.5, fy=0.5,
                          interpolation=random.choice([1, 2, 3]))
+    #cv2.imwrite('downsample{}.png'.format(num), img)
+    #num += 1
     return img
 
 
@@ -105,18 +115,19 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
         '5': _add_JPEG_noise,
     }
     shuffle_order = random.sample(range(6), 6)
+    #print(shuffle_order)
     for step_num in shuffle_order:
         result_img = degradation_dic['{}'.format(step_num)](result_img)
     result_img = _add_JPEG_noise(result_img)
-    result_img = _uint2single(result_img)
+    #result_img = _uint2single(result_img)
 
     return result_img
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../test_dir/gt_dir/123.png').astype(np.float32) / 255
+    img_ = cv2.imread('../test_dir/gt_dir/1234.png').astype(np.float32) / 255
     print(img_.shape)
-    img_ = random_degradation(img_)
-    print(img_.shape)
-    cv2.imwrite('12345.png', img_)
+    img_2 = random_degradation(img_)
+    print(img_2.shape)
+    cv2.imwrite('final.png', img_2.astype(np.float32) * 255)
     cv2.waitKey()

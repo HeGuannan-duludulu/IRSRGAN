@@ -362,7 +362,6 @@ def test():
     # deg_img = deg_img.float()
     # print(deg_img.shape)
     gen_out = gen(x)
-    from waitting_files.new_disc import IDiscriminator
     i_disc = IDiscriminator()
     disc_out = i_disc(gen_out)
 
