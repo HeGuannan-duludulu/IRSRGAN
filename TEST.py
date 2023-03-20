@@ -1,6 +1,5 @@
-import random
+import numpy as np
 
-a = [i for i in range(1, 7)]
-
-for _ in range(6):
-    print(random.sample(a, 6))
+idx = np.random.randint(0, 20, 30)
+print(len(idx))
+print(idx)
