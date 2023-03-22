@@ -8,7 +8,7 @@ import irsrgan_config
 import imgproc
 import model
 from utils import make_directory
-
+sr_dir = f"./merge/sr_dir/test2"
 
 def main() -> None:
     # Initialize the super-resolution bsrgan_model
@@ -36,6 +36,7 @@ def main() -> None:
     for index in range(total_files):
         lr_image_path = os.path.join(irsrgan_config.lr_dir, file_names[index])
         sr_image_path = os.path.join(sr_dir, file_names[index])
+        print(file_names[index])
         # gt_image_path = os.path.join(irsrgan_config.gt_dir, file_names[index])
 
         print(f"Processing `{os.path.abspath(lr_image_path)}`...")
@@ -53,10 +54,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    num = 140
-    test_path = "./test_dir/"
-    g_model_name = "IRSRGAN_org_with_pretrained(random_deg)/g_epoch_{}.pth.tar".format(num)
-    g_model_weights_path = os.path.join(test_path, g_model_name)
+    #num = 140
+    #test_path = "./merge/interp_02.pth.tar"
+    #g_model_name = "IRSRGAN_org_with_pretrained(random_deg)/g_epoch_{}.pth.tar".format(num)
 
-    sr_dir = f"./test_dir/sr_dir/{g_model_name}"
+    g_model_weights_path = "./merge/interp_08.pth.tar"
+
+
     main()

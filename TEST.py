@@ -1,5 +1,7 @@
-import numpy as np
+import jieba
 
-idx = np.random.randint(0, 20, 30)
-print(len(idx))
-print(idx)
+
+cnm = "我爱老师"
+
+fen_list = jieba.lcut(cnm)
+print(fen_list)
