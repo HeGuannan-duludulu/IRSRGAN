@@ -1,3 +1,8 @@
+"""
+This file is an api to use super-resolution model
+
+"""
+
 import os
 
 import cv2
@@ -10,7 +15,8 @@ import model
 from utils import make_directory
 
 sr_dir = "./sr_dir/"
-model_dir = "./moege_model"
+model_dir = "merge_model"
+lr_img_dir = "./lr_dir/lr_img_dir"
 
 
 def main(sr_image_path=None) -> None:
@@ -25,29 +31,22 @@ def main(sr_image_path=None) -> None:
     print(f"Load `{irsrgan_config.g_arch_name}` model weights "
           f"`{os.path.abspath(g_model_weights_path)}` successfully.")
 
-    # Create a folder of super-resolution experiment results
-    # make_directory(sr_dir)
-
-    # Start the verification mode of the bsrgan_model.
+    # Start the verification mode
     irsrgan_model.eval()
 
     # Get a list of test image file names.
-    file_names = natsorted(os.listdir("./lr_dir/lr_img_dir"))
+    file_names = natsorted(os.listdir(lr_img_dir))
     # Get the number of test image files.
     total_files = len(file_names)
 
     for index in range(total_files):
-        lr_image_path = os.path.join("./lr_dir/lr_img_dir", file_names[index])
+        lr_image_path = os.path.join(lr_img_dir, file_names[index])
         # sr_image_path = os.path.join(sr_dir, file_names[index])
         print(file_names[index])
-        # gt_image_path = os.path.join(irsrgan_config.gt_dir, file_names[index])
-
         print(f"Processing `{os.path.abspath(lr_image_path)}`...")
         lr_tensor = imgproc.preprocess_one_image(lr_image_path,
                                                  torch.device("cuda") if torch.cuda.is_available() else "cpu")
-        # gt_tensor = imgproc.preprocess_one_image(gt_image_path, irsrgan_config.device)
 
-        # Only reconstruct the Y channel image data.
         with torch.no_grad():
             sr_tensor = irsrgan_model(lr_tensor)
 

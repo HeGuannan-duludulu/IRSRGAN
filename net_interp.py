@@ -1,6 +1,4 @@
-import sys
 import torch
-from collections import OrderedDict
 
 Lambda = 1.0
 

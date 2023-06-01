@@ -1,3 +1,8 @@
+"""
+This code aims for splitting train sets and validate set
+"""
+
+
 import argparse
 import os
 import random

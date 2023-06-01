@@ -12,13 +12,9 @@ from torch.utils.tensorboard import SummaryWriter
 
 import irsrgan_config
 import model
-from dataset import CUDAPrefetcher, TrainValidImageDataset, TestImageDataset
+from dataset import CUDAPrefetcher, TrainValidImageDataset
 from image_quality_evaluate import PSNR, SSIM
 from utils import load_state_dict, make_directory, save_checkpoint, AverageMeter, ProgressMeter
-
-model_names = sorted(
-    name for name in model.__dict__ if
-    name.islower() and not name.startswith("__") and callable(model.__dict__[name]))
 
 
 def main():
@@ -205,7 +201,7 @@ def build_model() -> [nn.Module, nn.Module, nn.Module]:
 
     # Create an Exponential Moving Average Model
     ema_avg = lambda averaged_model_parameter, model_parameter, num_averaged: (
-                                                                                          1 - irsrgan_config.model_ema_decay) * averaged_model_parameter + irsrgan_config.model_ema_decay * model_parameter
+                                                                                      1 - irsrgan_config.model_ema_decay) * averaged_model_parameter + irsrgan_config.model_ema_decay * model_parameter
     ema_g_model = AveragedModel(g_model, avg_fn=ema_avg)
 
     return d_model, g_model, ema_g_model
