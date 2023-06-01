@@ -9,7 +9,8 @@ print("Define all optimizer functions successfully.")
 scheduler = define_scheduler(optimizer1)
 
 
-rrdbnet_model, ema_rrdbnet_model, start_epoch, best_psnr, best_ssim, optimizer, scheduler = load_state_dict(
+rrdbnet_model, ema_rrdbnet_model, start_epoch, best_psnr, best_ssim, optimizer, scheduler = \
+    load_state_dict(
             rrdbnet_model,
             "./test_dir/IRSRGAN_org_with_pretrained(random_deg)/selected/g_best.pth.tar",
             ema_rrdbnet_model,

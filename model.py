@@ -343,33 +343,12 @@ def content_loss(feature_model_extractor_node,
 
 def test():
     gen = Generator()
-    # from ir_deg import degradation_bsrgan
-    # import cv2
-    #
-    # hr_img = cv2.imread('utils/test2.jpg', 0)
-    # hr_img = cv2.resize(hr_img, (128, 128))
-    # print(hr_img.shape)
-
-    # deg_img, corr_hq = degradation_bsrgan(hr_img, sf=4, lq_patchsize=24)
-
     low_res = 32
     x = torch.randn((5, 3, low_res, low_res))
     print(x.shape)
-    # cv2.imshow('org_lr', deg_img)
-    # deg_img = torch.from_numpy(deg_img)
-    # deg_img = torch.unsqueeze(deg_img, 0)
-    # deg_img = deg_img.repeat(5, 3, 1, 1)
-    # deg_img = deg_img.float()
-    # print(deg_img.shape)
     gen_out = gen(x)
     i_disc = IDiscriminator()
     disc_out = i_disc(gen_out)
-
-    # print(gen_out[0][0].shape)
-    # out_pic = gen_out[0][0].detach().numpy()
-    # print(out_pic)
-    # cv2.imshow('1', out_pic)
-    # cv2.waitKey()
     print(disc_out)
 
 

@@ -16,9 +16,6 @@ from dataset import CUDAPrefetcher, TrainValidImageDataset, TestImageDataset
 from image_quality_evaluate import PSNR, SSIM
 from utils import load_state_dict, make_directory, save_checkpoint, AverageMeter, ProgressMeter
 
-model_names = sorted(
-    name for name in model.__dict__ if
-    name.islower() and not name.startswith("__") and callable(model.__dict__[name]))
 
 
 def main():

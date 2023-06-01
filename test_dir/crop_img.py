@@ -2,7 +2,7 @@
 import cv2
 import random
 
-image = cv2.imread('../1234.png')
+image = cv2.imread('../1234_srresnet.png')
 image_height, image_width = image.shape[:2]
 image_size = 128
 

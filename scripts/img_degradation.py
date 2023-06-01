@@ -125,7 +125,7 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../test_dir/gt_dir/1234.png').astype(np.float32) / 255
+    img_ = cv2.imread('../test_dir/gt_dir/1234_srresnet.png').astype(np.float32) / 255
     print(img_.shape)
     img_2 = random_degradation(img_)
     print(img_2.shape)

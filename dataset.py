@@ -93,7 +93,7 @@ class TestImageDataset(Dataset):
     def __init__(self, test_gt_images_dir: str, test_lr_images_dir: str) -> None:
         super(TestImageDataset, self).__init__()
         # Get all image file names in folder
-        """path to per pic"""
+        """path to per pic_compare_result"""
         self.gt_image_file_names = [os.path.join(test_gt_images_dir, x) for x in os.listdir(test_gt_images_dir)]
         self.lr_image_file_names = [os.path.join(test_lr_images_dir, x) for x in os.listdir(test_lr_images_dir)]
 

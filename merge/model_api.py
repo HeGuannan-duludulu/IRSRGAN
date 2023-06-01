@@ -8,12 +8,15 @@ import irsrgan_config
 import imgproc
 import model
 from utils import make_directory
-sr_dir = "./merge/sr_dir/test{}"
 
-def main() -> None:
+sr_dir = "./sr_dir/"
+model_dir = "./moege_model"
+
+
+def main(sr_image_path=None) -> None:
     # Initialize the super-resolution bsrgan_model
     irsrgan_model_ = model.Generator()
-    irsrgan_model = irsrgan_model_.to(device=irsrgan_config.device)
+    irsrgan_model = irsrgan_model_.to(device=torch.device("cuda") if torch.cuda.is_available() else "cpu")
     print(f"Build `{irsrgan_config.g_arch_name}` model successfully.")
 
     # Load the super-resolution irsrgan_model weights
@@ -23,24 +26,25 @@ def main() -> None:
           f"`{os.path.abspath(g_model_weights_path)}` successfully.")
 
     # Create a folder of super-resolution experiment results
-    make_directory(sr_dir)
+    # make_directory(sr_dir)
 
     # Start the verification mode of the bsrgan_model.
     irsrgan_model.eval()
 
     # Get a list of test image file names.
-    file_names = natsorted(os.listdir(irsrgan_config.lr_dir))
+    file_names = natsorted(os.listdir("./lr_dir/lr_img_dir"))
     # Get the number of test image files.
     total_files = len(file_names)
 
     for index in range(total_files):
-        lr_image_path = os.path.join(irsrgan_config.lr_dir, file_names[index])
-        sr_image_path = os.path.join(sr_dir, file_names[index])
+        lr_image_path = os.path.join("./lr_dir/lr_img_dir", file_names[index])
+        # sr_image_path = os.path.join(sr_dir, file_names[index])
         print(file_names[index])
         # gt_image_path = os.path.join(irsrgan_config.gt_dir, file_names[index])
 
         print(f"Processing `{os.path.abspath(lr_image_path)}`...")
-        lr_tensor = imgproc.preprocess_one_image(lr_image_path, irsrgan_config.device)
+        lr_tensor = imgproc.preprocess_one_image(lr_image_path,
+                                                 torch.device("cuda") if torch.cuda.is_available() else "cpu")
         # gt_tensor = imgproc.preprocess_one_image(gt_image_path, irsrgan_config.device)
 
         # Only reconstruct the Y channel image data.
@@ -50,10 +54,14 @@ def main() -> None:
         # Save image
         sr_image = imgproc.tensor_to_image(sr_tensor, False, False)
         sr_image = cv2.cvtColor(sr_image, cv2.COLOR_RGB2BGR)
-        cv2.imwrite(sr_image_path, sr_image)
+        cv2.imwrite(os.path.join(sr_image_path, file_names[index]), sr_image)
 
 
 if __name__ == "__main__":
-    model_list = os.listdir(sr_dir)
-    g_model_weights_path = model_name
-    main()
+    model_list = os.listdir(model_dir)
+    print(model_list)
+    for model_name in model_list:
+        g_model_weights_path = os.path.join(model_dir, model_name)
+        path = os.path.join(sr_dir, model_name)
+        make_directory(path)
+        main(sr_image_path=path)
