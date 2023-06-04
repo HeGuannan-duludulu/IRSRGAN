@@ -98,16 +98,13 @@ class Summary(Enum):
 
 class AverageMeter(object):
     def __init__(self, name, fmt=":f", summary_type=Summary.AVERAGE):
-        self.name = name
-        self.fmt = fmt
-        self.summary_type = summary_type
-        self.reset()
-
-    def reset(self):
         self.val = 0
         self.avg = 0
         self.sum = 0
         self.count = 0
+        self.name = name
+        self.fmt = fmt
+        self.summary_type = summary_type
 
     def update(self, val, n=1):
         self.val = val

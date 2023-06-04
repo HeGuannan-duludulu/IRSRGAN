@@ -1,4 +1,7 @@
 
+"""
+Random crop 128x128 image for each pic in the image datasets
+"""
 import argparse
 import multiprocessing
 import os

@@ -12,10 +12,6 @@ output: 32X32X3
 """
 
 
-# num = 1
-# blur_num = 1
-# jpeg_num = 1
-
 def _add_gaussian_noise(img: np.ndarray) -> np.ndarray:
     """
     Add gaussian noise to the image
@@ -120,13 +116,14 @@ def random_degradation(image: np.ndarray) -> np.ndarray:
     for step_num in shuffle_order:
         result_img = degradation_dic['{}'.format(step_num)](result_img)
     result_img = _add_JPEG_noise(result_img)
-    # result_img = _uint2single(result_img)
+    # Alert! For display! dont use this code when training!
+    result_img = _uint2single(result_img)
 
     return result_img
 
 
 if __name__ == '__main__':
-    img_ = cv2.imread('../test_dir/gt_dir/1234_srresnet.png').astype(np.float32) / 255
+    img_ = cv2.imread('../test_dir/gt_dir/0601.jpg').astype(np.float32) / 255
     print(img_.shape)
     img_2 = random_degradation(img_)
     print(img_2.shape)

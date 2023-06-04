@@ -1,3 +1,7 @@
+"""
+Calculate Lpips-I
+"""
+
 import lpips
 import cv2
 import numpy as np
@@ -24,6 +28,7 @@ img1 = img1.permute(2, 1, 0)
 
 # Calculate the blur degree of the image
 imageVar = cv2.Laplacian(input_img, cv2.CV_64F).var()
+# Calculate Lpips
 d = loss_fn_vgg(img0, img1)
 
 # calc Lpips-I

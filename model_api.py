@@ -1,3 +1,7 @@
+"""
+Super-resolution model api
+"""
+
 import os
 
 import cv2
@@ -8,7 +12,9 @@ import irsrgan_config
 import imgproc
 import model
 from utils import make_directory
-sr_dir = "./merge/sr_dir/test{}"
+
+sr_dir = "./test_dir/your_sr_dir"
+
 
 def main() -> None:
     # Initialize the super-resolution bsrgan_model
@@ -25,7 +31,7 @@ def main() -> None:
     # Create a folder of super-resolution experiment results
     make_directory(sr_dir)
 
-    # Start the verification mode of the bsrgan_model.
+    # Start the verification mode
     irsrgan_model.eval()
 
     # Get a list of test image file names.
@@ -37,17 +43,14 @@ def main() -> None:
         lr_image_path = os.path.join(irsrgan_config.lr_dir, file_names[index])
         sr_image_path = os.path.join(sr_dir, file_names[index])
         print(file_names[index])
-        # gt_image_path = os.path.join(irsrgan_config.gt_dir, file_names[index])
 
         print(f"Processing `{os.path.abspath(lr_image_path)}`...")
         lr_tensor = imgproc.preprocess_one_image(lr_image_path, irsrgan_config.device)
-        # gt_tensor = imgproc.preprocess_one_image(gt_image_path, irsrgan_config.device)
 
-        # Only reconstruct the Y channel image data.
         with torch.no_grad():
             sr_tensor = irsrgan_model(lr_tensor)
 
-        # Save image
+        # Save super-resolution image
         sr_image = imgproc.tensor_to_image(sr_tensor, False, False)
         sr_image = cv2.cvtColor(sr_image, cv2.COLOR_RGB2BGR)
         cv2.imwrite(sr_image_path, sr_image)
@@ -55,5 +58,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     model_list = os.listdir(sr_dir)
-    g_model_weights_path = model_name
+    g_model_weights_path = "model_name"
     main()

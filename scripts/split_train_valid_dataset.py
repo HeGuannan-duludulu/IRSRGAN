@@ -1,5 +1,5 @@
 """
-This code aims for splitting train sets and validate set
+This code aims for splitting train set and validate set
 """
 
 

@@ -2,13 +2,13 @@ from matplotlib import pyplot as plt
 
 epoch = [i for i in range(10, 160, 10)]
 
-pretrained = [37.32775115966797, 35.28377914428711, 36.73049545288086,
+pretrained_psnr = [37.32775115966797, 35.28377914428711, 36.73049545288086,
               36.72970199584961, 36.617088317871094, 36.720619201660156,
               35.180179595947266, 37.20132827758789, 37.005088806152344,
               37.14270782470703, 36.20542907714844, 37.49004364013672,
               37.42123031616211, 37.13987350463867, 37.37772750854492]
 
-no_pretrained = [34.07191467285156
+no_pretrained_psnr = [34.07191467285156
     , 36.584617614746094
     , 35.940547943115234
     , 36.9925537109375
@@ -39,13 +39,26 @@ no_pretrained_ssim = [0.9001473784446716, 0.8945433497428894, 0.8969144225120544
 
 
 
+
+plt.subplot(1,2,1)
+plt.plot(epoch, pretrained_psnr, "r-o", label='Pretrained')
+plt.plot(epoch, no_pretrained_psnr, "g-o", label='No Pretrained')
+plt.xlabel('Epoch')
+plt.ylabel('PSNR')
+plt.title('Comparison of Pretrained vs No Pretrained Models')
+plt.legend() # 添加图例
+
+
+plt.subplot(1,2,2)
 plt.plot(epoch, pretrained_ssim, "r-o", label='Pretrained')
 plt.plot(epoch, no_pretrained_ssim, "g-o", label='No Pretrained')
 plt.xlabel('Epoch')
 plt.ylabel('SSIM')
 plt.title('Comparison of Pretrained vs No Pretrained Models')
 plt.legend() # 添加图例
-plt.savefig("ssim.svg", format="svg")
+
+
+#plt.savefig("ssim.svg", format="svg")
 plt.show()
 
 
