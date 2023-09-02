@@ -124,8 +124,10 @@ Run the Models
 
 ## Demo
 
+![hugging_face_icon](https://huggingface.co/front/assets/huggingface_logo-noborder.svg)
 
-- [Try Demos Here!](https://huggingface.co/spaces/egg66/IRSRGAN)
+
+- [Try Demos Here!-4xResolution](https://huggingface.co/spaces/egg66/IRSRGAN)
 
 
 ---------------------
