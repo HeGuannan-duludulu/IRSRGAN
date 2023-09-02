@@ -57,6 +57,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    if not os.path.exists(sr_dir):
+        make_directory(sr_dir)
     model_list = os.listdir(sr_dir)
-    g_model_weights_path = "model_name"
+    g_model_weights_path = "./test_dir/models/IRSRGAN_org_with_pretrained/g_epoch_140.pth.tar"
     main()

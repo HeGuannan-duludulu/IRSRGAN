@@ -15,9 +15,10 @@ def PSNR(original, compressed):
 
 
 def main():
-    original = cv2.imread("./test_dir/gt_dir/0601.jpg")
-    for each_pic_name in os.listdir("./temp"):
-        full_path = os.path.join("./temp", each_pic_name)
+    pic_dir = "./pic_compare_result/pic1"
+    original = cv2.imread("./test_dir/gt_dir/1234.png")
+    for each_pic_name in os.listdir(pic_dir):
+        full_path = os.path.join(pic_dir, each_pic_name)
         each_pic = cv2.imread(full_path)
         value = PSNR(original, each_pic)
         print("PSNR value of {} is {} dB".format(each_pic_name, value))

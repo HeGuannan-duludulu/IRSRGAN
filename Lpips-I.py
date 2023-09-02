@@ -9,8 +9,8 @@ import torch
 import math
 
 
-hr_img_path = "./test_dir/gt_dir/your_hr_img.jpg"
-sr_img_path = "./test_dir/sr_dir/your_sr_img.jpg"
+hr_img_path = "./test_dir/gt_dir/1234.png"
+sr_img_path = "./pic_compare_result/pic1/1234_irsrgan.png"
 
 loss_fn_alex = lpips.LPIPS(net='alex')  # best forward scores
 loss_fn_vgg = lpips.LPIPS(net='vgg')  # closer to "traditional" perceptual loss, when used for optimization
