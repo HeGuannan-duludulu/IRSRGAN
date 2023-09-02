@@ -17,7 +17,9 @@ We propose a model IRSRGAN for infrared images based on super-resolution generat
 
 **CRDB reconstruction comparative experiment**
 ![exp3 crdb.svg](readme_pic%2Fexp3%20crdb.svg)
+
 We improved super-resolution for black-and-white images by addressing interference from a VGG19 model trained on color images. This interference caused green stripe artifacts in black-and-white reconstructions. To solve this, we modified the RRDB structure of ESRGAN and introduced a Comprehensive Residual Dense Block (CRDB) using a global dense residual block. This tailored approach avoids VGG's interference and leverages black-and-white image characteristics, enhancing model performance and stability. Experimental results (see Fig.) confirm the effectiveness of our approach, eliminating green stripe artifacts and achieving good performance in black-and-white image super-resolution.
+
 -------------
 
 **Comparison of SSIM boxplots with and without stochastic degradation strategy (left)**
