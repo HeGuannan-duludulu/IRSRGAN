@@ -14,6 +14,7 @@ We propose a model IRSRGAN for infrared images based on super-resolution generat
 **RRDB(a) vs CRDB(b)(Ours)**
 ![RRDBVSCRDB.svg](readme_pic%2FRRDBVSCRDB.svg)
 
+--------------
 
 **CRDB reconstruction comparative experiment**
 ![exp3 crdb.svg](readme_pic%2Fexp3%20crdb.svg)
@@ -54,6 +55,7 @@ Unlike traditional LPIPS metrics, LPIPS-I uses a specific clarity weighting fact
 ![compare_all_imgcompare_all_img (3).svg](readme_pic%2Fcompare_all_imgcompare_all_img%20%283%29.svg)
 
 IRCRRB and IRSRGAN models show excellent performance in image reconstruction.
+
 ----------------
 **Net Interpolation** 
 
@@ -105,6 +107,14 @@ Run the Models
 ```bash
    python model_api.py
 ```
+
+--------------
+
+## Download Weights
+
+
+- [Google Driver](https://drive.google.com/file/d/1L6Ev-hHYvJXEaVwjfrILwIehgpa7DVVe/view?usp=drive_link)
+
 
 ---------------------
 
