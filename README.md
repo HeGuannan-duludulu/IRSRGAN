@@ -24,16 +24,19 @@ We improved super-resolution for black-and-white images by addressing interferen
 
 **Comparison of SSIM boxplots with and without stochastic degradation strategy (left)**
 ![EXP1_ssim.svg](readme_pic%2FEXP1_ssim.svg)
+
 This experiment compared two scenarios for an image super-resolution algorithm: one without random degradation and one with random degradation. We used the TISR dataset with 100 randomly preprocessed low-resolution images and measured performance with PSNR and SSIM. We trained models with and without random degradation preprocessing. Results showed that the model with stochastic degradation during training had higher average PSNR and SSIM scores, indicating improved stability and performance for super-resolution with random blur in infrared images.
 
 ----------------
 **Comparison of reconstruction without randomized degradation and with randomized degradation data enhancement**
 ![exp1_ran_noran.svg](readme_pic%2Fexp1_ran_noran.svg)
+
 The image reconstruction results of both models have some distortion compared to the original image, but the algorithm with added stochastic degradation is superior in contrast and clarity compared to the other algorithm. Its super-resolution reconstructed image has richer details and textures. And it can reconstruct higher sharpness in the case of noise filled. In summary, this study found that the image super-resolution reconstruction model based on IRSRGAN algorithm performs relatively better in the reconstruction of blurred images in the face of blurring with the addition of stochastic degradation.
 
 ----------
 **Random Degradation**
 Our proposed degradation model, which can generate different LR images with a wide range of degradation by different degradation order and degradation methods. In the process of data preprocessing-data enhancement, we set the probability of the process of loading random degradation to 0.25, while the probability of performing normal bilinear downsampling is 0.75. Our proposed new degradation model can better reflect the image degradation in the real world and can provide more degradation samples for the super-resolution reconstruction.
+
 ![random degradation.svg](readme_pic%2FCopy%20of%20random%20degradation.svg)
 
 ---------------
@@ -49,12 +52,15 @@ Unlike traditional LPIPS metrics, LPIPS-I uses a specific clarity weighting fact
 **Results**
 
 ![compare_all_imgcompare_all_img (3).svg](readme_pic%2Fcompare_all_imgcompare_all_img%20%283%29.svg)
+
 IRCRRB and IRSRGAN models show excellent performance in image reconstruction.
 ----------------
 **Net Interpolation** 
 
 We applied a simple linear fusion method to the balancing scheme. The fusion parameter λ was chosen between 0 and 1, with a starting λ = 0.1 and a growth interval of 0.2.
+
 ![newnet_interp (2).svg](readme_pic%2Fnewnet_interp%20%282%29.svg)
+
 Purely gan-based methods produce sharp edges and richer textures but with some unwanted artifacts, while purely psnr-oriented methods output blurry images with high psnr values. By using network interpolation, the artifacts are reduced while maintaining the texture. Our network interpolation strategy provides a fusion model that balances perceptual quality and high fidelity, and outputs high-quality reconstructed IR images with both rich texture and high psnr values.
 
 
