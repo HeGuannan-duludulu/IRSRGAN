@@ -2,8 +2,10 @@ import torch
 
 Lambda = 1.0
 
-net_PSNR_path = './test_dir/models/irsrrdb-psnr/g_epoch_240.pth.tar'
-net_ESRGAN_path = './test_dir/models/IRSRGAN_org_with_pretrained(random_deg)/g_epoch_145.pth.tar'
+net_PSNR_path = './test_dir/models/irsrrdb-psnr/g_epoch_240.pth.tar' # psnr
+net_ESRGAN_path = './test_dir/models/IRSRGAN_org_with_pretrained(random_deg)/g_epoch_145.pth.tar' #gan
+
+# merged models
 net_interp_path = './merge/interp_{:02d}.pth.tar'.format(int(Lambda*10))
 
 net_PSNR = torch.load(net_PSNR_path, map_location=torch.device('cpu'))
