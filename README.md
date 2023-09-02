@@ -120,6 +120,13 @@ Run the Models
 
 - [Google Driver](https://drive.google.com/file/d/1L6Ev-hHYvJXEaVwjfrILwIehgpa7DVVe/view?usp=drive_link)
 
+-----------------------------
+
+## Demo
+
+
+- [Try Demos Here!](https://huggingface.co/spaces/egg66/IRSRGAN)
+
 
 ---------------------
 
