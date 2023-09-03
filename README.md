@@ -128,8 +128,7 @@ Run the Models
 
 
 <p align="left">
-  <a href="https://huggingface.co/spaces/egg66/IRSRGAN"><img alt="Huggingface" src="https://img.shields.io/badge/%F0%9F%A4%97HuggingFace-IRSRGAN-orange
-"></a>
+  <a href="https://huggingface.co/spaces/egg66/IRSRGAN"><img alt="Huggingface" src="https://img.shields.io/badge/%F0%9F%A4%97HuggingFace-IRSRGAN-orange"></a>
 </p>
 
 
