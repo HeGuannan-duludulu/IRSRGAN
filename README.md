@@ -122,11 +122,11 @@ Run the Models
 
 -----------------------------
 
-## Demo
+## Try Web Demos Here!-4xResolution
 
 ![hugging_face_icon](https://huggingface.co/front/assets/huggingface_logo-noborder.svg)
 
-Try Demos Here!-4xResolution
+
 <p align="left">
   <a href="https://huggingface.co/spaces/egg66/IRSRGAN"><img alt="Huggingface" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-DragGAN-orange"></a>
 </p>
