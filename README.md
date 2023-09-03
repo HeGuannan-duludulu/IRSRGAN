@@ -128,7 +128,8 @@ Run the Models
 
 
 <p align="left">
-  <a href="https://huggingface.co/spaces/egg66/IRSRGAN"><img alt="Huggingface" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-DragGAN-orange"></a>
+  <a href="https://huggingface.co/spaces/egg66/IRSRGAN"><img alt="Huggingface" src="
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="160" height="20" role="img" aria-label="🤗 Hugging Face: IRSRGAN"><title>🤗 Hugging Face: IRSRGAN</title><linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="r"><rect width="160" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#r)"><rect width="99" height="20" fill="#555"/><rect x="99" width="61" height="20" fill="#fe7d37"/><rect width="160" height="20" fill="url(#s)"/></g><g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110"><text aria-hidden="true" x="505" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="890">🤗 Hugging Face</text><text x="505" y="140" transform="scale(.1)" fill="#fff" textLength="890">🤗 Hugging Face</text><text aria-hidden="true" x="1285" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="510">IRSRGAN</text><text x="1285" y="140" transform="scale(.1)" fill="#fff" textLength="510">IRSRGAN</text></g></svg>"></a>
 </p>
 
 
